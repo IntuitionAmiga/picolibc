@@ -46,6 +46,14 @@ __picolibc_non_atomic_compare_exchange_ungetc(__ungetc_t *p, __ungetc_t d, __ung
     return __non_atomic_compare_exchange_ungetc(p, d, v);
 }
 
+#ifdef __ie64__
+__attribute__((weak)) bool
+__atomic_compare_exchange_ungetc(__ungetc_t *p, __ungetc_t d, __ungetc_t v)
+{
+    return __picolibc_non_atomic_compare_exchange_ungetc(p, d, v);
+}
+#else
 __weak_reference(__picolibc_non_atomic_compare_exchange_ungetc, __atomic_compare_exchange_ungetc);
+#endif
 
 #endif

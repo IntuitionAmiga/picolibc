@@ -59,6 +59,9 @@
 #else
 #define _ASMNAME(cname)
 #endif
+#if defined(__ie64__) && !defined(__ASMNAME)
+#define __ASMNAME(cname) cname
+#endif
 
 #define __ptr_t         void *
 #define __long_double_t long double
@@ -668,6 +671,11 @@
 #endif
 
 #endif /* __GNUC__ */
+
+#if defined(__ie64__) && !defined(__weak_reference)
+/* IE64 supplies the required fallback entry points from its machine port. */
+#define __weak_reference(sym, alias) static_assert(1, "IE64 machine alias")
+#endif
 
 /*
  * fall-through case statement annotations

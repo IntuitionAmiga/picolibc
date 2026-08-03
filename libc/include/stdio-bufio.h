@@ -45,6 +45,7 @@
 #define __BFALL 0x0004 /* FILE is allocated by stdio */
 #define __BFPTR 0x0008 /* funcs need pointers instead of ints */
 #define __BPIPE 0x0010 /* FILE is opened with popen */
+#define __BFOWN 0x0020 /* backend cookie is owned by this FILE */
 
 union __file_bufio_cookie {
     int   fd;
@@ -92,7 +93,8 @@ struct __file_bufio {
 #define FDEV_SETUP_BUFIO(_fd, _buf, _size, _read, _write, _lseek, _close, _rwflag, _bflags)        \
     {                                                                                              \
         .xfile = FDEV_SETUP_EXT(__bufio_put, __bufio_get, __bufio_flush,                           \
-                                (_bflags) & (__BALL | __BFALL) ? __bufio_close : __bufio_close_nf, \
+                                (_bflags) & (__BALL | __BFALL | __BFOWN) ? __bufio_close            \
+                                                                        : __bufio_close_nf,        \
                                 __bufio_seek, NULL, (_rwflag) | __SBUF),                           \
         .ptr = (void *)(intptr_t)(_fd), .dir = 0, .bflags = (_bflags), .pos = 0, .buf = _buf,      \
         .size = _size, .len = 0, .off = 0, { .read_int = _read }, { .write_int = _write },         \
@@ -105,7 +107,8 @@ struct __file_bufio {
 #define FDEV_SETUP_BUFIO_PTR(_ptr, _buf, _size, _read, _write, _lseek, _close, _rwflag, _bflags)   \
     {                                                                                              \
         .xfile = FDEV_SETUP_EXT(__bufio_put, __bufio_get, __bufio_flush,                           \
-                                (_bflags) & (__BALL | __BFALL) ? __bufio_close : __bufio_close_nf, \
+                                (_bflags) & (__BALL | __BFALL | __BFOWN) ? __bufio_close            \
+                                                                        : __bufio_close_nf,        \
                                 __bufio_seek, NULL, (_rwflag) | __SBUF),                           \
         .ptr = _ptr, .dir = 0, .bflags = (_bflags) | __BFPTR, .pos = 0, .buf = _buf,               \
         .size = _size, .len = 0, .off = 0, { .read_ptr = _read }, { .write_ptr = _write },         \

@@ -39,9 +39,16 @@
 
 #ifdef ENABLE_PICOLIBC_EXIT
 
+#ifdef __ie64__
+extern void __ie64_stdio_exit_anchor(void);
+#endif
+
 void
 exit(int code)
 {
+#ifdef __ie64__
+    __ie64_stdio_exit_anchor();
+#endif
 #ifdef __INIT_FINI_ARRAY
     __libc_fini_array();
 #else

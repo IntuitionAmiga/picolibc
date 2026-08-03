@@ -35,12 +35,21 @@
 
 #define _ISOC23_SOURCE
 #include <string.h>
+#ifdef __ie64__
+#include <ie64.h>
+#endif
 
 void *
 memset_explicit(void *dest, int ch, size_t count)
 {
     memset(dest, ch, count);
     /* Compiler barrier.  */
+#ifdef __ie64__
+    /* cproc's pinned IE64 operation preserves ordering across the call while
+     * avoiding unsupported GNU inline assembly. */
+    __builtin_ie64_nop();
+#else
     __asm__ __volatile__("" ::"r"(dest) : "memory");
+#endif
     return dest;
 }

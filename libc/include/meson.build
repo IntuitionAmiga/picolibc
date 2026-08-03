@@ -86,6 +86,8 @@ inc_headers = [
   'stdio-bufio.h',
   'stdio-posix.h',
   'stdnoreturn.h',
+  'stdbit.h',
+  'stdckdint.h',
   'stdlib.h',
   'string.h',
   'strings.h',

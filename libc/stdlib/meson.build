@@ -77,6 +77,7 @@ srcs_stdlib = [
     'erand48.c',
     'exit.c',
     'exitprocs.c',
+    'free_sized.c',
     '_Exit.c',
     '_findenv.c',
     'getenv.c',

@@ -43,6 +43,14 @@ __picolibc_non_atomic_exchange_ungetc(__ungetc_t *p, __ungetc_t v)
     return __non_atomic_exchange_ungetc(p, v);
 }
 
+#ifdef __ie64__
+__attribute__((weak)) __ungetc_t
+__atomic_exchange_ungetc(__ungetc_t *p, __ungetc_t v)
+{
+    return __picolibc_non_atomic_exchange_ungetc(p, v);
+}
+#else
 __weak_reference(__picolibc_non_atomic_exchange_ungetc, __atomic_exchange_ungetc);
+#endif
 
 #endif

@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#if defined(__AMDGCN__) || defined(__nvptx__)
+#if defined(__AMDGCN__) || defined(__nvptx__) || defined(__ie64__)
 /* Global constructors not supported on this target, yet.  */
 uintptr_t __stack_chk_guard = 0x00000aff; /* 0, 0, '\n', 255  */
 

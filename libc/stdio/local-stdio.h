@@ -257,9 +257,28 @@ bufio_remove_file(FILE *f)
     }
     __LIBC_UNLOCK();
 }
+
+static inline bool
+bufio_file_registered(FILE *f)
+{
+    struct __file_bufio *bf;
+    bool                 registered = false;
+
+    __LIBC_LOCK();
+    for (bf = (struct __file_bufio *)__stdio_file_list; bf;
+         bf = (struct __file_bufio *)bf->next) {
+        if (&bf->xfile.cfile.file == f) {
+            registered = true;
+            break;
+        }
+    }
+    __LIBC_UNLOCK();
+    return registered;
+}
 #else
 #define bufio_add_file(f)
 #define bufio_remove_file(f)
+#define bufio_file_registered(f) false
 #endif
 
 int  __stdio_flags(const char *mode, int *optr);

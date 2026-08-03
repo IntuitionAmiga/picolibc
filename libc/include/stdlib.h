@@ -92,6 +92,10 @@ size_t __locale_mb_cur_max(void) __picolibc_export;
 
 /* Declare free up here so it can be used with __malloc_like */
 void free(void *) __nothrow __picolibc_export;
+#if __ISO_C_VISIBLE >= 2023
+void free_sized(void *, size_t) __nothrow __picolibc_export;
+void free_aligned_sized(void *, size_t, size_t) __nothrow __picolibc_export;
+#endif
 
 #if __ISO_C_VISIBLE >= 1999
 __noreturn void _Exit(int __status) __picolibc_export;

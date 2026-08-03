@@ -46,7 +46,11 @@ static struct __file_bufio __stderr
 
 FILE * const __posix_stderr = &__stderr.xfile.cfile.file;
 
+#ifdef __ie64__
+__attribute__((weak)) FILE * const stderr = &__stderr.xfile.cfile.file;
+#else
 __weak_reference(__posix_stderr, stderr);
+#endif
 
 #if __PICOLIBC_STDERR_BUFSIZE > 1
 /*

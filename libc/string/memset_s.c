@@ -36,6 +36,12 @@
 #include <string.h>
 #include <stdbool.h>
 #include "string_private.h"
+#ifdef __ie64__
+#include <ie64.h>
+#define COMPILER_MEMORY_BARRIER(pointer) __builtin_ie64_nop()
+#else
+#define COMPILER_MEMORY_BARRIER(pointer) __asm__ __volatile__("" ::"r"(pointer) : "memory")
+#endif
 
 __errno_t
 memset_s(void *s, rsize_t smax, int c, rsize_t n)
@@ -65,14 +71,14 @@ memset_s(void *s, rsize_t smax, int c, rsize_t n)
     // Normal return path
     (void)memset(s, c, n);
     /* Compiler barrier.  */
-    __asm__ __volatile__("" ::"r"(s) : "memory");
+    COMPILER_MEMORY_BARRIER(s);
     return 0;
 
 handle_error:
     if (s != NULL) {
         (void)memset(s, c, smax);
         /* Compiler barrier.  */
-        __asm__ __volatile__("" ::"r"(s) : "memory");
+        COMPILER_MEMORY_BARRIER(s);
     }
 
     if (__cur_handler != NULL) {

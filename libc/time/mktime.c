@@ -81,6 +81,18 @@ ANSI C requires <<mktime>>.
 #include <errno.h>
 #include <stdbool.h>
 
+#ifdef __ie64__
+static int
+ie64_add_overflow_int(int a, int b, int *result)
+{
+    unsigned int sum = (unsigned int)a + (unsigned int)b;
+    *result = (int)sum;
+    return (b > 0 && a > __INT_MAX__ - b) || (b < 0 && a < (-__INT_MAX__ - 1) - b);
+}
+#undef __picolibc_add_overflow
+#define __picolibc_add_overflow(a, b, c) ie64_add_overflow_int((a), (b), (c))
+#endif
+
 #define _DAYS_IN_MONTH(x) ((x == 1) ? days_in_feb : __month_lengths[0][x])
 
 static const int16_t _DAYS_BEFORE_MONTH[12]

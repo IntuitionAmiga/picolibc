@@ -43,6 +43,14 @@ __picolibc_non_atomic_store_ungetc(__ungetc_t *p, __ungetc_t v)
     __non_atomic_store_ungetc(p, v);
 }
 
+#ifdef __ie64__
+__attribute__((weak)) void
+__atomic_store_ungetc(__ungetc_t *p, __ungetc_t v)
+{
+    __picolibc_non_atomic_store_ungetc(p, v);
+}
+#else
 __weak_reference(__picolibc_non_atomic_store_ungetc, __atomic_store_ungetc);
+#endif
 
 #endif

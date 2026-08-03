@@ -41,7 +41,11 @@ static struct __file_bufio __stdout = FDEV_SETUP_POSIX(1, write_buf, BUFSIZ, __S
 
 FILE * const               __posix_stdout = &__stdout.xfile.cfile.file;
 
+#ifdef __ie64__
+__attribute__((weak)) FILE * const stdout = &__stdout.xfile.cfile.file;
+#else
 __weak_reference(__posix_stdout, stdout);
+#endif
 
 /*
  * Add a destructor function to get stdout flushed on

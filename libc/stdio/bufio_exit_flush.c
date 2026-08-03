@@ -51,8 +51,18 @@ _bufio_exit_flush(void)
         __LIBC_UNLOCK();
         if (!f)
             break;
-        fflush(f);
+        (void)fclose(f);
     }
+
+    if (stdout)
+        (void)fflush(stdout);
+    if (stderr)
+        (void)fflush(stderr);
+}
+
+__attribute__((visibility("hidden"))) void
+__ie64_stdio_exit_anchor(void)
+{
 }
 
 __attribute__((constructor)) static void

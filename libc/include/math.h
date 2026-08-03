@@ -397,7 +397,7 @@ int __issignalingl(long double d) __picolibc_export;
 #define signbit(__x)                                                           \
     ((sizeof(__x) == sizeof(float))                                            \
          ? __signbitf(__x)                                                     \
-         : ((sizeof(__x) == sizeof(double)) ? __signbit((double)(__x))         \
+         : ((sizeof(__x) == sizeof(double)) ? __signbitd((double)(__x))        \
                                             : __signbitl((long double)(__x))))
 #else
 #define signbit(__x) ((sizeof(__x) == sizeof(float)) ? __signbitf(__x) : __signbitd((double)(__x)))
@@ -411,6 +411,15 @@ int __issignalingl(long double d) __picolibc_export;
 #define islessequal(__x, __y)    (__builtin_islessequal(__x, __y))
 #define islessgreater(__x, __y)  (__builtin_islessgreater(__x, __y))
 #define isunordered(__x, __y)    (__builtin_isunordered(__x, __y))
+#elif defined(__ie64__)
+/* cproc does not implement GNU statement expressions.  IE64 comparisons
+ * already have the required unordered-NaN behaviour. */
+#define isgreater(x, y)      ((x) > (y))
+#define isgreaterequal(x, y) ((x) >= (y))
+#define isless(x, y)         ((x) < (y))
+#define islessequal(x, y)    ((x) <= (y))
+#define islessgreater(x, y)  ((x) < (y) || (x) > (y))
+#define isunordered(x, y)    ((x) != (x) || (y) != (y))
 #else
 #define isgreater(x, y)                        \
     (__extension__({                           \

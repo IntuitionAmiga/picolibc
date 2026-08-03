@@ -42,7 +42,7 @@ nexttowardf(float x, long double y)
      * get any exceptions in that case.
      */
     if (isnan(y))
-        return x + (issignaling(y) ? __builtin_nansf("") : (float)y);
+        return x + (issignaling(y) ? asfloat(UINT32_C(0x7f800001)) : (float)y);
     if (isnan(x))
         return x + x;
 

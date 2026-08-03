@@ -43,6 +43,14 @@ __picolibc_non_atomic_load_ungetc(const volatile __ungetc_t *p)
     return __non_atomic_load_ungetc(p);
 }
 
+#ifdef __ie64__
+__attribute__((weak)) __ungetc_t
+__atomic_load_ungetc(const volatile __ungetc_t *p)
+{
+    return __picolibc_non_atomic_load_ungetc(p);
+}
+#else
 __weak_reference(__picolibc_non_atomic_load_ungetc, __atomic_load_ungetc);
+#endif
 
 #endif

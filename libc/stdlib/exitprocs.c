@@ -118,6 +118,9 @@ __call_exitprocs(int code, void *param)
 }
 
 #ifdef __INIT_FINI_ARRAY
+#ifdef __ie64__
+__attribute__((section(".fini_array_onexit"), used))
+#endif
 static const void *__call_exitprocs_ref __section(".fini_array_onexit") __used = __call_exitprocs;
 #endif
 
