@@ -2,7 +2,7 @@
 #define _IE64_FILE_INTERNAL_H
 
 #include "local-stdio.h"
-#include <ie64/platform.h>
+#include <intuitionengine.h>
 
 FILE *__ie64_stream_from_handle(uint64_t handle, const char *mode);
 int __ie64_mode_flags(const char *mode, unsigned int *flags);

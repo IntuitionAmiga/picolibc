@@ -1,5 +1,5 @@
 #include <errno.h>
-#include <ie64/platform.h>
+#include <intuitionengine.h>
 #include <sys/types.h>
 
 #define TERM_OUT (*(volatile unsigned char *)(uintptr_t)0xF0700)

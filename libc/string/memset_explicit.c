@@ -36,7 +36,7 @@
 #define _ISOC23_SOURCE
 #include <string.h>
 #ifdef __ie64__
-#include <ie64.h>
+#include <intuitionengine.h>
 #endif
 
 void *

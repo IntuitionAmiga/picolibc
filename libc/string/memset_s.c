@@ -37,7 +37,7 @@
 #include <stdbool.h>
 #include "string_private.h"
 #ifdef __ie64__
-#include <ie64.h>
+#include <intuitionengine.h>
 #define COMPILER_MEMORY_BARRIER(pointer) __builtin_ie64_nop()
 #else
 #define COMPILER_MEMORY_BARRIER(pointer) __asm__ __volatile__("" ::"r"(pointer) : "memory")
